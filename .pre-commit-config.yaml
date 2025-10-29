@@ -1,0 +1,8 @@
+# pre-commit
+  - repo: https://github.com/terraform-docs/pre-commit-terraform
+    rev: v5.0.0 
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
+        args:
+         - --args=- recursive

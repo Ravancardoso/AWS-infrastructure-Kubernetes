@@ -2,8 +2,8 @@
 # VPC
 # =====================
 resource "aws_vpc" "eks_vpc" {
-  cidr_block          = "10.0.0.0/16"
-  enable_dns_support  = true
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
@@ -53,9 +53,9 @@ resource "aws_subnet" "eks_public_b" {
 
 # Private Subnets
 resource "aws_subnet" "eks_private_1a" {
-  vpc_id              = aws_vpc.eks_vpc.id
-  cidr_block          = "10.0.3.0/24"
-  availability_zone   = "us-east-1a"
+  vpc_id            = aws_vpc.eks_vpc.id
+  cidr_block        = "10.0.3.0/24"
+  availability_zone = "us-east-1a"
 
   tags = {
     Name        = "private-subnet-a-terraform-eks"
@@ -64,9 +64,9 @@ resource "aws_subnet" "eks_private_1a" {
 }
 
 resource "aws_subnet" "eks_private_1b" {
-  vpc_id              = aws_vpc.eks_vpc.id
-  cidr_block          = "10.0.4.0/24"
-  availability_zone   = "us-east-1b"
+  vpc_id            = aws_vpc.eks_vpc.id
+  cidr_block        = "10.0.4.0/24"
+  availability_zone = "us-east-1b"
 
   tags = {
     Name        = "private-subnet-b-terraform-eks"
@@ -82,7 +82,7 @@ resource "aws_route_table" "public" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.igw_vpc_eks.id 
+    gateway_id = aws_internet_gateway.igw_vpc_eks.id
   }
 
   tags = {
@@ -111,22 +111,22 @@ resource "aws_route_table" "private_b" {
 # Route Table Association
 
 resource "aws_route_table_association" "public_a" {
-  subnet_id      = aws_subnet.eks_public_a.id 
+  subnet_id      = aws_subnet.eks_public_a.id
   route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "public_b" {
-  subnet_id      = aws_subnet.eks_public_b.id 
+  subnet_id      = aws_subnet.eks_public_b.id
   route_table_id = aws_route_table.public.id
 }
 
 resource "aws_route_table_association" "private_a" {
-  subnet_id      = aws_subnet.eks_private_1a.id 
+  subnet_id      = aws_subnet.eks_private_1a.id
   route_table_id = aws_route_table.private_a.id
 }
 
 resource "aws_route_table_association" "private_b" {
-  subnet_id      = aws_subnet.eks_private_1b.id 
+  subnet_id      = aws_subnet.eks_private_1b.id
   route_table_id = aws_route_table.private_b.id
 }
 
@@ -135,36 +135,36 @@ resource "aws_route_table_association" "private_b" {
 
 resource "aws_eip" "nat_a" {
   domain = "vpc"
-  tags = { Name = "nat-eip-a-terraform-eks" }
+  tags   = { Name = "nat-eip-a-terraform-eks" }
 }
 
 resource "aws_eip" "nat_b" {
   domain = "vpc"
-  tags = { Name = "nat-eip-b-terraform-eks" }
+  tags   = { Name = "nat-eip-b-terraform-eks" }
 }
 
 resource "aws_nat_gateway" "nat_a" {
   allocation_id = aws_eip.nat_a.id
-  subnet_id     = aws_subnet.eks_public_a.id 
+  subnet_id     = aws_subnet.eks_public_a.id
 
   tags = {
-    Name = "nat-gateway-a-terraform-eks"
+    Name        = "nat-gateway-a-terraform-eks"
     environment = "development"
   }
 
-  depends_on = [aws_internet_gateway.igw_vpc_eks] 
+  depends_on = [aws_internet_gateway.igw_vpc_eks]
 }
 
 resource "aws_nat_gateway" "nat_b" {
   allocation_id = aws_eip.nat_b.id
-  subnet_id     = aws_subnet.eks_public_b.id 
+  subnet_id     = aws_subnet.eks_public_b.id
 
   tags = {
-    Name = "nat-gateway-b-terraform-eks"
+    Name        = "nat-gateway-b-terraform-eks"
     environment = "development"
   }
 
-  depends_on = [aws_internet_gateway.igw_vpc_eks] 
+  depends_on = [aws_internet_gateway.igw_vpc_eks]
 }
 
 
@@ -189,7 +189,7 @@ resource "aws_route" "private_b_route" {
 resource "aws_security_group" "security_group" {
   name        = "security-group-terraform"
   description = "ec2 terraform security group"
-  vpc_id      = aws_vpc.eks_vpc.id 
+  vpc_id      = aws_vpc.eks_vpc.id
 
   # ingress
 
@@ -202,7 +202,7 @@ resource "aws_security_group" "security_group" {
   }
 
   # Egress
-  
+
   ingress {
     description = "MySQL"
     from_port   = 3306
