@@ -34,8 +34,9 @@ resource "aws_subnet" "eks_public_a" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "public-subnet-a-terraform-eks"
-    environment = "development"
+    Name                         = "public-subnet-a-terraform-eks"
+    "kubernetes.io / role / elb" = 1
+    environment                  = "development"
   }
 }
 
@@ -46,8 +47,9 @@ resource "aws_subnet" "eks_public_b" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "public-subnet-b-terraform-eks"
-    environment = "development"
+    Name                         = "public-subnet-b-terraform-eks"
+    "kubernetes.io / role / elb" = 1
+    environment                  = "development"
   }
 }
 
@@ -203,7 +205,7 @@ resource "aws_security_group" "security_group" {
 
   # Egress
 
-  ingress {
+  egress {
     description = "MySQL"
     from_port   = 3306
     to_port     = 3306
