@@ -4,7 +4,7 @@ locals {
   tags = {
     environment  = "development"
     organization = "infrastructure and delevopment"
-    project      = "EKS"
+    project      = "EKS-project"
   }
 
   # Name Cluster 

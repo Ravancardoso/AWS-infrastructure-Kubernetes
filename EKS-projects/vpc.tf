@@ -6,12 +6,10 @@ resource "aws_vpc" "eks_vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = merge(
-    var.common_tags,
-    {
-      "Name" = "${var.project_name}-vpc"
-    }
-  )
+  tags = {
+    Name        = "igw-terraform-eks"
+    environment = "development"
+  }
 }
 
 
@@ -173,7 +171,7 @@ resource "aws_nat_gateway" "nat_b" {
 
 
 
-# Route Private NAT
+# Routet Private NAT
 
 resource "aws_route" "private_a_route" {
   route_table_id         = aws_route_table.private_a.id
