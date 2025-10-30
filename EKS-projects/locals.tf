@@ -1,4 +1,4 @@
-# locals.tf
+# locals
 
 locals {
   tags = {

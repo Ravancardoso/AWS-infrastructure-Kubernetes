@@ -6,10 +6,12 @@ resource "aws_vpc" "eks_vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = {
-    Name        = "vpc-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    var.common_tags,
+    {
+      "Name" = "${var.project_name}-vpc"
+    }
+  )
 }
 
 
