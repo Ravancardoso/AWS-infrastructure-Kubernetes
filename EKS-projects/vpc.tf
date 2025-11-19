@@ -7,7 +7,7 @@ resource "aws_vpc" "eks_vpc" {
   enable_dns_hostnames = true
 
   tags = {
-    Name        = "igw-terraform-eks"
+    Name        = "Eks-vpc-terraform-eks"
     environment = "development"
   }
 }

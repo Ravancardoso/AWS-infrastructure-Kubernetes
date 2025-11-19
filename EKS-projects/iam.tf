@@ -1,8 +1,8 @@
-
 # IAM Role do EKS Cluster
 
 resource "aws_iam_role" "eks_cluster" {
-  name = "var.eks_cluster_role"
+  name = var.eks_cluster_role
+
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -33,9 +33,9 @@ resource "aws_iam_role_policy_attachment" "cluster_AmazonEKSServicePolicy" {
 
 
 
-# ------------------------------------------------------
+
 # IAM Role para os EKS Managed Node Groups
-# ------------------------------------------------------
+
 resource "aws_iam_role" "eks_nodes" {
   name = "${var.project_name}-eks-nodes-role"
 
