@@ -33,6 +33,15 @@ OIDC Provider: Provedor de Identidade OpenID Connect para segurança do IRSA.
 └── README.md            # Este arquivo
 
 
+
+
+
+
+
+
+
+
+
 ✅ Pré-requisitos
 Para executar este projeto, você precisa ter o seguinte instalado e configurado:
 
