@@ -34,3 +34,4 @@ resource "helm_release" "alb_helm_controller" {
     value = var.vpc_id
   }
 }
+

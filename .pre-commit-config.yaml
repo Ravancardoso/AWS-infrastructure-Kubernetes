@@ -5,4 +5,4 @@
       - id: terraform_fmt
       - id: terraform_validate
         args:
-         - --args=- recursive
+         - --args=- -output-file README.md
