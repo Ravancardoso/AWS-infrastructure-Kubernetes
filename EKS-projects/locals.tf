@@ -1,10 +1,15 @@
 # locals
 
 locals {
-  tags = {
-    environment  = "development"
-    organization = "infrastructure and delevopment"
-    project      = "EKS-project"
+  environment_tags = {
+    Environment = "dev"
+  }
+
+  default_tags = {
+    Project     = "EKS-project"
+    Owner       = "Ravan Cardoso"
+    ManagedBy   = "Terraform"
+    Departament = "Devops"
   }
 
   # Name Cluster 

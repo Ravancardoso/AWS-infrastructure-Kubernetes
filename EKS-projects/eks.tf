@@ -38,8 +38,11 @@ module "eks_cluster" {
     }
   }
 
-  tags = {
-    Environment = "development"
-    Project     = "EKS project"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "eks_cluster"
+    }
+  )
 }

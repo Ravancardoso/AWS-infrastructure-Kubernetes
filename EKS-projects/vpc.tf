@@ -6,10 +6,13 @@ resource "aws_vpc" "eks_vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = {
-    Name        = "Eks-vpc-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "eks_vpc"
+    }
+  )
 }
 
 
@@ -17,10 +20,13 @@ resource "aws_vpc" "eks_vpc" {
 
 resource "aws_internet_gateway" "igw_vpc_eks" {
   vpc_id = aws_vpc.eks_vpc.id
-  tags = {
-    Name        = "igw-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "igw_eks_vpc"
+    }
+  )
 }
 
 
@@ -59,10 +65,13 @@ resource "aws_subnet" "eks_private_1a" {
   cidr_block        = "10.0.3.0/24"
   availability_zone = "us-east-1a"
 
-  tags = {
-    Name        = "private-subnet-a-terraform-eks"
-    environment = "delevopment"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "eks_private_1a"
+    }
+  )
 }
 
 resource "aws_subnet" "eks_private_1b" {
@@ -70,10 +79,13 @@ resource "aws_subnet" "eks_private_1b" {
   cidr_block        = "10.0.4.0/24"
   availability_zone = "us-east-1b"
 
-  tags = {
-    Name        = "private-subnet-b-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "eks_private_1b"
+    }
+  )
 }
 
 
@@ -87,26 +99,35 @@ resource "aws_route_table" "public" {
     gateway_id = aws_internet_gateway.igw_vpc_eks.id
   }
 
-  tags = {
-    Name        = "public-rt-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "eks_route_table_public"
+    }
+  )
 }
 
 resource "aws_route_table" "private_a" {
   vpc_id = aws_vpc.eks_vpc.id
-  tags = {
-    Name        = "private-rt-a-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "eks_route_table_private_a"
+    }
+  )
 }
 
 resource "aws_route_table" "private_b" {
   vpc_id = aws_vpc.eks_vpc.id
-  tags = {
-    Name        = "private-rt-b-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "eks_route_table_private_b"
+    }
+  )
 }
 
 
@@ -137,22 +158,37 @@ resource "aws_route_table_association" "private_b" {
 
 resource "aws_eip" "nat_a" {
   domain = "vpc"
-  tags   = { Name = "nat-eip-a-terraform-eks" }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "nat-gateway-a-terraform-eks"
+    }
+  )
 }
 
 resource "aws_eip" "nat_b" {
   domain = "vpc"
-  tags   = { Name = "nat-eip-b-terraform-eks" }
+ tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "nat-gateway-b-terraform-eks"
+    }
+  )
 }
 
 resource "aws_nat_gateway" "nat_a" {
   allocation_id = aws_eip.nat_a.id
   subnet_id     = aws_subnet.eks_public_a.id
 
-  tags = {
-    Name        = "nat-gateway-a-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "nat-gateway-a-terraform-eks"
+    }
+  )
 
   depends_on = [aws_internet_gateway.igw_vpc_eks]
 }
@@ -161,10 +197,13 @@ resource "aws_nat_gateway" "nat_b" {
   allocation_id = aws_eip.nat_b.id
   subnet_id     = aws_subnet.eks_public_b.id
 
-  tags = {
-    Name        = "nat-gateway-b-terraform-eks"
-    environment = "development"
-  }
+  tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "nat-gateway-b-terraform-eks"
+    }
+  )
 
   depends_on = [aws_internet_gateway.igw_vpc_eks]
 }
@@ -213,8 +252,11 @@ resource "aws_security_group" "security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name        = "security-group-terraform"
-    environment = "development"
-  }
+   tags = merge(
+    local.default_tags,
+    local.environment_tags,
+    {
+      Name = "ec2 terraform security group"
+    }
+  )
 }
